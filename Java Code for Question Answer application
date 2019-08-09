@@ -1,0 +1,53 @@
+File1: QuizServlet.java
+package mypack;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.DriverManager;
+import javax.servlet.ServletException;                                         
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
+ protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet QuizServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<form action=showResult >");
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/Quiz","root","root");
+                Statement stmt=con.createStatement();
+                ResultSet res=stmt.executeQuery("Select * from Quiz");
+                out.println("<table border=1>");
+                int qno=0;
+                while(res.next()){
+                    qno++;
+                    out.println("<tr><td>"+res.getString(1)+"</td>");
+                    out.println("<td>"+res.getString(2)+"</td></tr>");
+                    out.println("<tr><td><input type=radio name="+qno+"value="+res.getString(3)+"></td><td>"+res.getString(3)+"</td></tr>");
+                    out.println("<tr><td><input type=radio name="+qno+"value="+res.getString(4)+"></td><td>"+res.getString(4)+"</td></tr>");
+                    out.println("<tr><td><input type=radio name="+qno+"value="+res.getString(5)+"></td><td>"+res.getString(5)+"</td></tr>");
+                    out.println("<tr><td><input type=radio name="+qno+"value="+res.getString(6)+"></td><td>"+res.getString(6)+"</td></tr>");
+                }
+        }
+        catch(Exception e)
+        {
+            out.println(e);
+        }
+        finally {            
+            out.close();
+        }
+            out.println("</form>");
+            out.println("</body>");
+            out.println("</html>");
+        
+    }
